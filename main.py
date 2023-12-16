@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 import nlp
 import random
 
-# We pass the history object that we get after model training in tensorflow to this function and it will plot the accuracy, cross validation accuracy, loss and the cross validation loss for us.
+# I pass the history object that we get after model training in tensorflow to this function and it will plot the accuracy, cross validation accuracy, loss and the cross validation loss for us.
 # And import the confusion matrix from sklearn to calculate our predictions against the ground truth
 def show_history(h):
     epochs_trained = len(h.history['loss'])
@@ -72,6 +72,7 @@ tweets, labels = get_tweets(train)
 
 # Tensorflow comes with build in tokeniser. Here tokeniser means breaking a sentence into smaller units called tokens
 # for example: "This is a sentence" might be tokenised into "This", "is", "a", "sentence"
+
 from tensorflow.keras.preprocessing.text import Tokenizer
 # Tensorflow keras is an high level neural networks API allows developers to define, compile, and train deep learning models using a simplified and expressive syntax
 # Why tokenising?
@@ -79,8 +80,10 @@ from tensorflow.keras.preprocessing.text import Tokenizer
 
 tokeniser = Tokenizer(num_words=10000, oov_token='<UNK>')
 # Here we used only 10000 most frequently used words and rest are tokenised as <UNK>
+
 tokeniser.fit_on_texts(tweets)  # Maps the words to numeric tokens
-# Lets see our Tokens
+
+# Lets see the Tokens made
 print(tweets[0], '\n', tokeniser.texts_to_sequences([tweets[0]]))
 
 # The model which I am going to create needs a fixed input shape but the tweets may not be in a fixed shape so i will be Padding and truncating the sequences
@@ -126,14 +129,18 @@ print(index_to_class)
 model = tf.keras.models.Sequential([
     tf.keras.layers.Embedding(10000, 16, input_length=max_len),
     # Embedding here maps discrete tokens to continuous vectors of fixed size. It learns to represent words in a continuous vector space
+    
     tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(20, return_sequences=True)),
     # A bidirectional layer processes the input data in both forward and backward direction and it wraps LSTM layer in it
     # The primary advantage of LSTM networks lies in their ability to effectively learn and remember information over long sequences
     # return_sequences=True means in this case, the Bidirectional LSTM layer will return the full sequence of outputs for each input sequence
+    
     tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(20)),
     # Here, the Bidirectional LSTM layer will return only the output corresponding to the last time step for each input sequence
+    
     tf.keras.layers.Dense(6, activation='softmax')
     # Softmax is a generalisation of a logistic regression (which is a binary classification algorithm) to the multiclass classification contexts.
+    
 ])
 
 model.compile(
@@ -141,6 +148,7 @@ model.compile(
     optimizer=tf.keras.optimizers.legacy.Adam(learning_rate=1e-2),
     metrics=['accuracy']
     # ADAM stands for ADAptive Moment estimation. It can help in increasing or decreasing the learning rate accordingly
+    
 )
 
 model.summary()
@@ -157,7 +165,8 @@ h = model.fit(
     padded_train_sequences, train_labels,
     validation_data=(val_seq, val_labels),
     epochs=20,
-    # During each epoch, the neural network processes every training example once, updating the model's weights based on the computed error or loss.
+    # During each epoch the neural network processes every training example once updating the model's weights based on the computed error or loss
+    
     verbose=0,
     callbacks=[
         tf.keras.callbacks.EarlyStopping(monitor='val_accuracy', patience=2)
@@ -165,6 +174,7 @@ h = model.fit(
     # It defines a callback for early stopping during the training of a neural network to prevent overfitting
     # In this case, if the validation accuracy does not improve for 2 consecutive epochs, training will be stopped early.
     # Setting verbose to different values will determine the level of detail shown in the output.
+    
 )
 
 # Evaluating the model
