@@ -2,6 +2,11 @@
 
 Welcome to the Tweet Emotion Recognizer project! 🚀
 
+## Google Collab Link
+```bash
+https://colab.research.google.com/drive/1dHLQrw1ivm9buk21RA-Wg5ZpOlktJYaQ?usp=sharing
+```
+
 ## Overview
 
 The Tweet Emotion Recognizer is an advanced machine learning tool designed to analyze tweets and predict the underlying emotions expressed by users. Leveraging state-of-the-art natural language processing techniques, this project aims to provide valuable insights into the emotional tone of social media conversations.
